@@ -21,7 +21,7 @@ SRC_DIR		:=	./src
 INC_DIR		:=	./include
 LIB_DIR		:=	./lib
 
-SRC			:=	
+SRC			:=	pipex/pipex.c
 
 OBJ			:=	$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 
