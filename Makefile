@@ -21,7 +21,8 @@ SRC_DIR		:=	./src
 INC_DIR		:=	./include
 LIB_DIR		:=	./lib
 
-SRC			:=	pipex/pipex.c
+SRC			:=	pipex/pipex.c \
+				pipex/pipex_exit.c
 
 OBJ			:=	$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 
@@ -45,17 +46,13 @@ RESET	:= \033[0m
 
 #============= COMPILATION ==============#
 
-HEADER		:=	-I $(INC_DIR)\
+INCLUDE		:=	-I $(INC_DIR)\
 				-I $(LIB_LIBFT)/include
-
-ifdef TEST
-HEADER		+=	-I ./src/tester/include
-endif
 
 LIB			:=
 
 CC			:=	gcc
-CFL			:=	-Wall -Werror -Wextra -g#fsanitize=address
+CFL			:=	-Wall -Werror -Wextra -g
 COMPILE		:=	$(CC) $(CFL)
 
 #========================================#
@@ -67,12 +64,12 @@ all: $(NAME)
 $(OBJ_DIR):
 	@mkdir -p $@
 
-$(NAME): $(LIB_LIST) $(OBJ) 
-	@$(COMPILE) $^ $(HEADER) -o $(NAME) $(LIB) $(LIB_LIST) 
+$(NAME): LIB $(OBJ) 
+	@$(COMPILE) $(INCLUDE) $(OBJ) -o $(NAME) $(LIB_LIST)
 	@echo "$(CYAN)$(BOLD)COMPILING COMPLETE$(RESET)"
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/*/%.c | $(OBJ_DIR)
-	@$(COMPILE) -o $@ -c $< $(HEADER)
+	@$(COMPILE) -o $@ -c $< $(INCLUDE)
 	@echo "$(CYAN)COMPILING: $(notdir $<)$(RESET)"
 
 flclean: lclean fclean
@@ -97,6 +94,8 @@ tclean: fclean
 #========================================#
 #============== LIBRARIES ===============#
 #========================================#
+
+LIB: $(LIB_LIST)
 
 $(LIB_LIB_ARC):
 	@make -C $(LIB_LIBFT)
