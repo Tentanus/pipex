@@ -6,7 +6,7 @@
 #    By: mweverli <mweverli@student.codam.n>          +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/01 17:54:19 by mweverli      #+#    #+#                  #
-#    Updated: 2022/10/18 01:08:16 by mweverli      ########   odam.nl          #
+#    Updated: 2022/10/31 00:04:10 by mweverli      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 #=========  GENERAL VARIABLES:  =========#
 #========================================#
 
-NAME		:=	pipex
+NAME		:=	./pipex
 
 OBJ_DIR		:=	./OBJ
 SRC_DIR		:=	./src
@@ -22,7 +22,8 @@ INC_DIR		:=	./include
 LIB_DIR		:=	./lib
 
 SRC			:=	pipex/pipex.c \
-				pipex/pipex_exit.c
+				pipex/pipex_error.c \
+				pipex/pipex_check_input.c
 
 OBJ			:=	$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 
@@ -52,8 +53,11 @@ INCLUDE		:=	-I $(INC_DIR)\
 LIB			:=
 
 CC			:=	gcc
-CFL			:=	-Wall -Werror -Wextra -g
+CFL			:=	-Wall -Werror -Wextra $(if DEBUG,-g)
 COMPILE		:=	$(CC) $(CFL)
+
+echo:
+	@echo $(SRC)
 
 #========================================#
 #============== RECIPIES  ===============#
@@ -71,6 +75,9 @@ $(NAME): LIB $(OBJ)
 $(OBJ_DIR)/%.o:$(SRC_DIR)/*/%.c | $(OBJ_DIR)
 	@$(COMPILE) -o $@ -c $< $(INCLUDE)
 	@echo "$(CYAN)COMPILING: $(notdir $<)$(RESET)"
+
+debug: flclean
+	@$(MAKE) DEBUG=1
 
 flclean: lclean fclean
 
