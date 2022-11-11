@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:05:49 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/10/31 00:04:06 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/11 14:12:18 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,10 @@
 
 # include <libft.h>
 
+//			FORBIDEN Includes
+
+# include <stdio.h>
+
 //		MACROS
 
 # define PRCS_CHILD 0
@@ -38,6 +42,10 @@
 # define PIPE_WRITE 1 
 
 //		STRUCTURES
+
+typedef struct s_pipex{
+	char	**path;
+} t_pipex;
 
 //		FUNCTIONS
 
