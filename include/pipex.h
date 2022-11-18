@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:05:49 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/11 22:51:01 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/13 22:20:25 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ typedef struct s_pipex{
 //		FUNCTIONS
 
 void	pipex_error(int error_id, const char* inp);
-void	pipex_check_input(int argc, char **argv, char **envp);
 t_pipex	pipex_init(int argc, char **argv, char **env);
 
 #endif
