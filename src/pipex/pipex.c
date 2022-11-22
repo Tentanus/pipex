@@ -6,23 +6,46 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/14 14:07:32 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/22 17:27:55 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-void	child_func(int *p_fd)
+void	first_child(t_pipex pipex)
 {
-	if (close(p_fd[1] == -1))
-		pipex_error(0, "close_fd child");
-	printf("CHILD (%d): active\n", getpid());
-	exit(EXIT_SUCCESS);
+	const int	fd = open(pipex.file_1, O_RDONLY);
+
+	if (fd == -1)
+		pipex_error(0, "first child");
+
 }
 
-int	main(int argc, char **argv)
+int	main(int argc, char **argv, char **env)
 {
+	t_pipex	pipex;
+	t_pid	pid;
+
+	if (argc != 5)
+		pipex_error(1, "give 4 arguments");
+	pipex = pipex_init(argc, argv, env);
+	pid = fork();
+	if (pid == -1)
+		pipex_error(0, "fork_1");
+	else if (!pid)
+		first_child(pipex);
+	pid = fork();
+	if (pid == -1)
+		pipex_error(0, "fork_2");
+	else if (!pid)
+		second_child(pipex);
+	wait
+}
+
+
+/*
 	int		p_fd[2];
+
 	int		i;
 	pid_t	pid;
 
@@ -64,7 +87,7 @@ int	main(int argc, char **argv)
 	printf("PARENT (%d) ENDS\n", getpid());
 	return (0);
 }
-
+*/
 
 //	test using the file [dev/random]
 //
