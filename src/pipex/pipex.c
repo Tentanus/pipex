@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/22 17:27:55 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/24 19:19:15 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,39 @@
 
 void	first_child(t_pipex pipex)
 {
-	const int	fd = open(pipex.file_1, O_RDONLY);
+	int		fd;
+	char	**func;
+	char	*cmd;
 
-	if (fd == -1)
-		pipex_error(0, "first child");
+	fd = open(pipex.file_1, O_RDONLY);
+	close(pipex.pipefd[0]);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	dup2(fd, STDIN_FILENO);
+	dup2(pipex.pipefd[1], STDOUT_FILENO);
+	close(fd);
+	close(pipex.pipefd[1]);
+	if (errno != 0)
+		pipex_error(0, "first_child");
+	func = ft_split(pipex.cmd_1);
+	if (!func)
+		pipex_error(0, "first_child");
+	cmd = get_cmd(func[0], pipex.path);
+	if (cmd)
+	{
+		free(func[0]);
+		func[0] = cmd;
+	}
+	if (execve(func[0], func, pipex,env) == -1)
+		exit(127);
+}
 
+void	second_chile(t_pipex pipex)
+{
+	int		fd;
+	char	**func;
+
+	fd = open(pipex.file_22
 }
 
 int	main(int argc, char **argv, char **env)
@@ -26,6 +54,7 @@ int	main(int argc, char **argv, char **env)
 	t_pipex	pipex;
 	t_pid	pid;
 
+	ft_printf("test:%d\t%s", errno, strerror(errno));
 	if (argc != 5)
 		pipex_error(1, "give 4 arguments");
 	pipex = pipex_init(argc, argv, env);
@@ -39,7 +68,6 @@ int	main(int argc, char **argv, char **env)
 		pipex_error(0, "fork_2");
 	else if (!pid)
 		second_child(pipex);
-	wait
 }
 
 

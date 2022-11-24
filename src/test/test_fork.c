@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/22 14:18:33 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/24 12:49:02 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ int	main(int argc, char **argv)
 	i = ft_atoi(argv[1]);
 	if (i < 1 && argc > 1)
 		pipex_error(1, "argument must be positive");
-	printf("PARENT (%d) START:\n", getpid());
-	if (pipe(p_fd) == -1)
 		pipex_error(0, "pipe_cration");
 
 	while (i--)

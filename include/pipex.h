@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:05:49 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/22 17:27:58 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/24 19:19:21 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 //							PIPE   	creates a unidirectional pipe used for interprocess communication
 //							UNLINK 	
 # include <sys/wait.h>	//	WAIT   	
-						//	WAITPID	
+//							WAITPID	
 # include <string.h>	//	strerror
 # include <errno.h>
 
@@ -43,7 +43,7 @@
 
 //		STRUCTURES
 
-typedef struct s_pip{
+typedef struct s_pipex{
 	char	*cmd_1;
 	char	*cmd_2;
 	char	*file_1;
@@ -51,7 +51,7 @@ typedef struct s_pip{
 	char	**env;
 	char	**path;
 	int		pipefd[2];
-} t_pip;
+} t_pipex;
 
 //		FUNCTIONS
 
