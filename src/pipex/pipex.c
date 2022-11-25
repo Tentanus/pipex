@@ -6,11 +6,12 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/25 18:33:29 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/25 19:23:19 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
+#include <stdio.h>
 
 void	first_child(t_pipex pipex)
 {
@@ -20,15 +21,14 @@ void	first_child(t_pipex pipex)
 
 	fd = open(pipex.file_1, O_RDONLY);
 	close(pipex.pipefd[0]);
-	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	dup2(fd, STDIN_FILENO);
 	dup2(pipex.pipefd[1], STDOUT_FILENO);
-	close(fd);
-	close(pipex.pipefd[1]);
+	printf("%d\n%s\n", errno, strerror(errno));
 	if (errno != 0)
 		pipex_error(0, "first_child");
-	func = ft_split(pipex.cmd_1, ':');
+	func = ft_split(pipex.cmd_1, ' ');
+	printf("test\n");
 	if (!func)
 		pipex_error(0, "first_child");
 	cmd = get_cmd(func[0], pipex.path);
@@ -46,17 +46,16 @@ void	second_child(t_pipex pipex)
 
 	fd = open(pipex.file_2, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	close(pipex.pipefd[1]);
-	close(STDIN_FILENO);
 	close(STDOUT_FILENO);
 	dup2(fd, STDOUT_FILENO);
 	dup2(pipex.pipefd[0], STDIN_FILENO);
-	close(fd);
-	close(pipex.pipefd[0]);
+	printf("%d\n%s\n", errno, strerror(errno));
 	if (errno != 0)
 		pipex_error(0, "second_child");
-	func = ft_split(pipex.cmd_2, ':');
+	printf("test\n");
+	func = ft_split(pipex.cmd_2, ' ');
 	if (!func)
-		pipex_error(0, "first_child");
+		pipex_error(0, "second_child");
 	cmd = get_cmd(func[0], pipex.path);
 	free(func[0]);
 	func[0] = cmd;
