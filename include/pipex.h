@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:05:49 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/24 19:19:21 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/25 18:33:31 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 //							UNLINK 	
 # include <sys/wait.h>	//	WAIT   	
 //							WAITPID	
+#include <fcntl.h>		//	OPEN   	
 # include <string.h>	//	strerror
 # include <errno.h>
 
@@ -51,11 +52,21 @@ typedef struct s_pipex{
 	char	**env;
 	char	**path;
 	int		pipefd[2];
+	size_t	pid;
 } t_pipex;
 
 //		FUNCTIONS
 
 void	pipex_error(int error_id, const char* inp);
-t_pipex	pipex_init(int argc, char **argv, char **env);
+
+//	Init
+
+char	**get_path(char **env);
+t_pipex	pipex_init(char **argv, char **env);
+
+//	Utils
+
+int		wait_for(t_pipex pipex);
+char	*get_cmd(char *cmd, char **path);
 
 #endif

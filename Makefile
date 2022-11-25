@@ -6,7 +6,7 @@
 #    By: mweverli <mweverli@student.codam.n>          +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/01 17:54:19 by mweverli      #+#    #+#                  #
-#    Updated: 2022/11/22 17:29:03 by mweverli      ########   odam.nl          #
+#    Updated: 2022/11/25 18:33:30 by mweverli      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,8 @@ LIB_DIR		:=	./lib
 
 SRC			:=	pipex/pipex.c \
 				pipex/pipex_error.c \
-				pipex/pipex_init.c
+				pipex/pipex_init.c \
+				pipex/pipex_utils.c
 
 OBJ			:=	$(addprefix $(OBJ_DIR)/,$(notdir $(SRC:.c=.o)))
 

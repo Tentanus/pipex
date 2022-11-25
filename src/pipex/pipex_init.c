@@ -6,27 +6,27 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/11 22:32:33 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/22 17:27:56 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/25 18:05:28 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 
-char	**get_path_in_env(env)
+char	**get_path(char **env)
 {
 	char	**ret;
 
-	while(strncmp(env, "PATH", 4))
+	while(!(ft_strncmp(*env, "PATH", 4)))
 		env++;
-	ret = ft_split((env + 5), ':');
+	ret = ft_split(env[5], ':');
 	if (!ret)
 		pipex_error(0, "pipex_init");
 	return (ret);
 }
 
-t_pip	pipex_init(int argc, char **argv, char **env)
+t_pipex	pipex_init(char **argv, char **env)
 {
-	t_pip	pipex;
+	t_pipex	pipex;
 
 	pipex.file_1 = argv[1];
 	pipex.cmd_1 = argv[2];
@@ -36,4 +36,6 @@ t_pip	pipex_init(int argc, char **argv, char **env)
 	pipex.path = get_path(env);
 	if (pipe(pipex.pipefd) == -1)
 		pipex_error(0, "pipex_init");
+	pipex.pid = 0;
+	return (pipex);
 }

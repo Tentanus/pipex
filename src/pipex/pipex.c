@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/24 19:19:15 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/25 18:33:29 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,46 +28,64 @@ void	first_child(t_pipex pipex)
 	close(pipex.pipefd[1]);
 	if (errno != 0)
 		pipex_error(0, "first_child");
-	func = ft_split(pipex.cmd_1);
+	func = ft_split(pipex.cmd_1, ':');
 	if (!func)
 		pipex_error(0, "first_child");
 	cmd = get_cmd(func[0], pipex.path);
-	if (cmd)
-	{
-		free(func[0]);
-		func[0] = cmd;
-	}
-	if (execve(func[0], func, pipex,env) == -1)
+	free(func[0]);
+	func[0] = cmd;
+	if (execve(func[0], func, pipex.env) == -1)
 		exit(127);
 }
 
-void	second_chile(t_pipex pipex)
+void	second_child(t_pipex pipex)
 {
 	int		fd;
 	char	**func;
+	char	*cmd;
 
-	fd = open(pipex.file_22
+	fd = open(pipex.file_2, O_WRONLY | O_TRUNC | O_CREAT, 0644);
+	close(pipex.pipefd[1]);
+	close(STDIN_FILENO);
+	close(STDOUT_FILENO);
+	dup2(fd, STDOUT_FILENO);
+	dup2(pipex.pipefd[0], STDIN_FILENO);
+	close(fd);
+	close(pipex.pipefd[0]);
+	if (errno != 0)
+		pipex_error(0, "second_child");
+	func = ft_split(pipex.cmd_2, ':');
+	if (!func)
+		pipex_error(0, "first_child");
+	cmd = get_cmd(func[0], pipex.path);
+	free(func[0]);
+	func[0] = cmd;
+	if (execve(func[0], func, pipex.env) == -1)
+		exit(127);
 }
 
 int	main(int argc, char **argv, char **env)
 {
 	t_pipex	pipex;
-	t_pid	pid;
+	int		status;
 
-	ft_printf("test:%d\t%s", errno, strerror(errno));
 	if (argc != 5)
 		pipex_error(1, "give 4 arguments");
-	pipex = pipex_init(argc, argv, env);
-	pid = fork();
-	if (pid == -1)
+	pipex = pipex_init(argv, env);
+	pipex.pid = fork();
+	if (pipex.pid == (size_t) -1)
 		pipex_error(0, "fork_1");
-	else if (!pid)
+	else if (!pipex.pid)
 		first_child(pipex);
-	pid = fork();
-	if (pid == -1)
+	pipex.pid = fork();
+	if (pipex.pid == (size_t) -1)
 		pipex_error(0, "fork_2");
-	else if (!pid)
+	else if (!pipex.pid)
 		second_child(pipex);
+	status = wait_for(pipex);
+	close(pipex.pipefd[0]);
+	close(pipex.pipefd[1]);
+	return (status);
 }
 
 
