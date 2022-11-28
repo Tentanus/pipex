@@ -6,61 +6,48 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/25 19:23:19 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/28 18:24:56 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
 #include <stdio.h>
 
+FILE *fp;
+
 void	first_child(t_pipex pipex)
 {
 	int		fd;
-	char	**func;
+	char	**arg;
 	char	*cmd;
 
 	fd = open(pipex.file_1, O_RDONLY);
-	close(pipex.pipefd[0]);
-	close(STDOUT_FILENO);
-	dup2(fd, STDIN_FILENO);
-	dup2(pipex.pipefd[1], STDOUT_FILENO);
-	printf("%d\n%s\n", errno, strerror(errno));
-	if (errno != 0)
+	setup_fd(fd, STDIN_FILENO, pipex.pipefd[PIPE_WRITE], STDOUT_FILENO);
+	close_pipe(pipex.pipefd);
+	arg = ft_split(pipex.cmd_1, ' ');
+	if (!arg)
 		pipex_error(0, "first_child");
-	func = ft_split(pipex.cmd_1, ' ');
-	printf("test\n");
-	if (!func)
-		pipex_error(0, "first_child");
-	cmd = get_cmd(func[0], pipex.path);
-	free(func[0]);
-	func[0] = cmd;
-	if (execve(func[0], func, pipex.env) == -1)
-		exit(127);
+	cmd = get_cmd(arg[0], pipex.path);
+	execve(cmd, arg, pipex.env);
+	exit(127);
 }
+//follow fork mode
 
 void	second_child(t_pipex pipex)
 {
 	int		fd;
-	char	**func;
+	char	**arg;
 	char	*cmd;
 
 	fd = open(pipex.file_2, O_WRONLY | O_TRUNC | O_CREAT, 0644);
-	close(pipex.pipefd[1]);
-	close(STDOUT_FILENO);
-	dup2(fd, STDOUT_FILENO);
-	dup2(pipex.pipefd[0], STDIN_FILENO);
-	printf("%d\n%s\n", errno, strerror(errno));
-	if (errno != 0)
+	setup_fd(pipex.pipefd[0], STDIN_FILENO, fd, STDOUT_FILENO);
+	close_pipe(pipex.pipefd);
+	arg = ft_split(pipex.cmd_2, ' ');
+	if (!arg)
 		pipex_error(0, "second_child");
-	printf("test\n");
-	func = ft_split(pipex.cmd_2, ' ');
-	if (!func)
-		pipex_error(0, "second_child");
-	cmd = get_cmd(func[0], pipex.path);
-	free(func[0]);
-	func[0] = cmd;
-	if (execve(func[0], func, pipex.env) == -1)
-		exit(127);
+	cmd = get_cmd(arg[0], pipex.path);
+	execve(cmd, arg, pipex.env);
+	exit(127);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -68,22 +55,26 @@ int	main(int argc, char **argv, char **env)
 	t_pipex	pipex;
 	int		status;
 
+//	fp = fopen("fprintf.txt", "w");
 	if (argc != 5)
 		pipex_error(1, "give 4 arguments");
 	pipex = pipex_init(argv, env);
 	pipex.pid = fork();
-	if (pipex.pid == (size_t) -1)
+//	printf("%u\t%s\n", pipex.pid, strerror(errno));
+	if (pipex.pid == -1)
 		pipex_error(0, "fork_1");
-	else if (!pipex.pid)
+	if (pipex.pid == 0)
 		first_child(pipex);
 	pipex.pid = fork();
-	if (pipex.pid == (size_t) -1)
+	if (pipex.pid == -1)
 		pipex_error(0, "fork_2");
-	else if (!pipex.pid)
+	if (pipex.pid == 0)
 		second_child(pipex);
 	status = wait_for(pipex);
+	waitpid(pipex.pid, &status, 0);
 	close(pipex.pipefd[0]);
 	close(pipex.pipefd[1]);
+	fclose(fp);
 	return (status);
 }
 

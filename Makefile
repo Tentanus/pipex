@@ -6,7 +6,7 @@
 #    By: mweverli <mweverli@student.codam.n>          +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/01 17:54:19 by mweverli      #+#    #+#                  #
-#    Updated: 2022/11/25 18:33:30 by mweverli      ########   odam.nl          #
+#    Updated: 2022/11/28 11:22:31 by mweverli      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -80,24 +80,20 @@ $(OBJ_DIR)/%.o:$(SRC_DIR)/*/%.c | $(OBJ_DIR)
 debug: flclean
 	@$(MAKE) DEBUG=1
 
-flclean: lclean fclean
-
-lclean:
-	@make -C $(LIB_LIBFT) clean
-	@$(RM) $(LIB_LIB_ARC)
-
 clean:
-	@mkdir -p $(OBJ_DIR)
 	@rm -rf $(OBJ_DIR)
 	@echo "$(RED)$(BOLD)CLEANING $(NAME)$(RESET)"
 
 fclean: clean 
 	@rm -f $(NAME)
 
-re: fclean all
+lclean:
+	@make -C $(LIB_LIBFT) clean
+	@$(RM) $(LIB_LIB_ARC)
 
-tclean: fclean
-	rm -f $(EXE)
+flclean: lclean fclean
+
+re: fclean all
 
 #========================================#
 #============== LIBRARIES ===============#

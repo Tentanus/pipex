@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:05:49 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/25 18:33:31 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/28 18:25:01 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_pipex{
 	char	**env;
 	char	**path;
 	int		pipefd[2];
-	size_t	pid;
+	pid_t	pid;
 } t_pipex;
 
 //		FUNCTIONS
@@ -68,5 +68,7 @@ t_pipex	pipex_init(char **argv, char **env);
 
 int		wait_for(t_pipex pipex);
 char	*get_cmd(char *cmd, char **path);
+void	setup_fd(int fd_1, int fd_2, int fd_3, int fd_4);
+void	close_pipe(int pipefd[2]);
 
 #endif

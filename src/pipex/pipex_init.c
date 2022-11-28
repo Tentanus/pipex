@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/11 22:32:33 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/25 18:05:28 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/28 18:24:57 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ char	**get_path(char **env)
 {
 	char	**ret;
 
-	while(!(ft_strncmp(*env, "PATH", 4)))
+	while(ft_strncmp(*env, "PATH", 4))
 		env++;
-	ret = ft_split(env[5], ':');
+	ret = ft_split(&env[0][5], ':');
 	if (!ret)
 		pipex_error(0, "pipex_init");
 	return (ret);

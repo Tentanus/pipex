@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/24 12:56:19 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/25 18:08:15 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/28 18:25:00 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,19 @@
 char	*get_cmd(char *cmd, char **path)
 {
 	int		i;
-	char	*tmp;
+	char	*cmd_path;
 
 	i = 0;
+	cmd = ft_strjoin("/", cmd);
 	while (path[i] != NULL)
 	{
-		tmp = ft_strjoin(path[i], cmd);
-		if (access(path[i], W_OK) == 0)
-			return (tmp);
-		free(tmp);
+		cmd_path = ft_strjoin(path[i], cmd);
+		if (access(cmd_path, X_OK) == 0)
+			return (free(cmd), cmd_path);
+		free(cmd_path);
 		i++;
 	}
-	return (ft_strdup(cmd));
+	return (cmd);
 }
 
 int	wait_for(t_pipex pipex)
@@ -47,4 +48,20 @@ int	wait_for(t_pipex pipex)
 		}
 	}
 	return (status);
+}
+
+void	setup_fd(int fd_1, int fd_2, int fd_3, int fd_4)
+{
+	if (dup2(fd_1, fd_2) == -1)
+		pipex_error(0, "setup_fd");
+	if (dup2(fd_3, fd_4) == -1)
+		pipex_error(0, "setup_fd");
+}
+
+void	close_pipe(int pipefd[2])
+{
+	if (close(pipefd[0]) == -1)
+		pipex_error(0, "close_pipe");
+	if (close(pipefd[1]) == -1)
+		pipex_error(0, "close_pipe");
 }
