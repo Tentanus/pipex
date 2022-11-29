@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/24 12:56:19 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/28 18:25:00 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/29 15:38:50 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,22 @@ char	*get_cmd(char *cmd, char **path)
 {
 	int		i;
 	char	*cmd_path;
+	char	*cmd_tmp;
 
+	if (!ft_strncmp(cmd, "./", 2))
+		if (access(cmd, X_OK | F_OK) == -1)
+			pipex_error(0, "get_cmd");
 	i = 0;
-	cmd = ft_strjoin("/", cmd);
+	cmd_tmp = ft_strjoin("/", cmd);
 	while (path[i] != NULL)
 	{
-		cmd_path = ft_strjoin(path[i], cmd);
-		if (access(cmd_path, X_OK) == 0)
+		cmd_path = ft_strjoin(path[i], cmd_tmp);
+		if (access(cmd_path, X_OK | F_OK) == 0)
 			return (free(cmd), cmd_path);
 		free(cmd_path);
 		i++;
 	}
+	free(cmd_tmp);
 	return (cmd);
 }
 

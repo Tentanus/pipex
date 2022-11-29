@@ -6,7 +6,7 @@
 #    By: mweverli <mweverli@student.codam.n>          +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/01 17:54:19 by mweverli      #+#    #+#                  #
-#    Updated: 2022/11/28 11:22:31 by mweverli      ########   odam.nl          #
+#    Updated: 2022/11/29 15:23:09 by mweverli      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,13 +48,13 @@ RESET	:= \033[0m
 
 #============= COMPILATION ==============#
 
-INCLUDE		:=	-I $(INC_DIR)\
+INCLUDE		:=	-I $(INC_DIR) \
 				-I $(LIB_LIBFT)/include
 
 LIB			:=
 
 CC			:=	gcc
-CFL			:=	-Wall -Werror -Wextra $(if DEBUG,-g)
+CFL			:=	-Wall -Werror -Wextra $(if DEBUG, -g -fsanitize=address)
 COMPILE		:=	$(CC) $(CFL)
 
 echo:
@@ -77,8 +77,10 @@ $(OBJ_DIR)/%.o:$(SRC_DIR)/*/%.c | $(OBJ_DIR)
 	@$(COMPILE) -o $@ -c $< $(INCLUDE)
 	@echo "$(CYAN)COMPILING: $(notdir $<)$(RESET)"
 
-debug: flclean
+debug:
 	@$(MAKE) DEBUG=1
+
+rebug: fclean debug
 
 clean:
 	@rm -rf $(OBJ_DIR)
