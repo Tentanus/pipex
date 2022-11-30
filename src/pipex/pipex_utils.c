@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/24 12:56:19 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/29 15:38:50 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/30 14:07:44 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,16 @@ char	*get_cmd(char *cmd, char **path)
 int	wait_for(t_pipex pipex)
 {
 	int	status;
-	int	i;
 
-	waitpid(pipex.pid, &status, 0);
-	while (1)
-	{
-		i = wait(NULL);
-		if (i == -1)
-		{
-			if (errno == ECHILD)
-				break ;
-			else
-				pipex_error(0, "wait_for");
-		}
-	}
+	waitpid(pipex.pid_1, &status, 0);
+	waitpid(pipex.pid_2, &status, 0);
 	return (status);
 }
 
 void	setup_fd(int fd_1, int fd_2, int fd_3, int fd_4)
 {
-	if (dup2(fd_1, fd_2) == -1)
-		pipex_error(0, "setup_fd");
-	if (dup2(fd_3, fd_4) == -1)
-		pipex_error(0, "setup_fd");
+	dup2(fd_1, fd_2);
+	dup2(fd_3, fd_4);
 }
 
 void	close_pipe(int pipefd[2])

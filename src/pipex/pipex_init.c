@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/11 22:32:33 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/29 15:38:51 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/30 14:07:48 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_pipex	pipex_init(char **argv, char **env)
 	pipex.path = get_path(env);
 	if (pipe(pipex.pipefd) == -1)
 		pipex_error(0, "pipex_init");
-	pipex.pid = 0;
+	pipex.pid_1 = 0;
+	pipex.pid_2 = 0;
 	return (pipex);
 }

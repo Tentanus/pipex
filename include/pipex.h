@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:05:49 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/28 18:25:01 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/30 14:07:45 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ typedef struct s_pipex{
 	char	**env;
 	char	**path;
 	int		pipefd[2];
-	pid_t	pid;
+	pid_t	pid_1;
+	pid_t	pid_2;
 } t_pipex;
 
 //		FUNCTIONS

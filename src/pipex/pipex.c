@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/29 15:38:52 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/11/30 15:30:16 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	first_child(t_pipex pipex)
 	char	**arg;
 	char	*cmd;
 
-	pipex.pid = fork();
-	if (pipex.pid == -1)
+	pipex.pid_1 = fork();
+	if (pipex.pid_1 == -1)
 		pipex_error(0, "fork_1");
-	if (pipex.pid != 0)
+	if (pipex.pid_1 != 0)
 		return ;
 	fd = open(pipex.file_1, O_RDONLY);
 	if (fd == -1)
@@ -43,10 +43,10 @@ void	second_child(t_pipex pipex)
 	char	**arg;
 	char	*cmd;
 
-	pipex.pid = fork();
-	if (pipex.pid == -1)
+	pipex.pid_2 = fork();
+	if (pipex.pid_2 == -1)
 		pipex_error(0, "fork_2");
-	if (pipex.pid != 0)
+	if (pipex.pid_2 != 0)
 		return ;
 	fd = open(pipex.file_2, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
@@ -73,6 +73,9 @@ int	main(int argc, char **argv, char **env)
 	second_child(pipex);
 	close_pipe(pipex.pipefd);
 	status = wait_for(pipex);
+	printf("%d\t%d"
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (status);
 }
 
@@ -81,3 +84,6 @@ int	main(int argc, char **argv, char **env)
 //	pipe_fd[0] = read-end of pipee
 //	pipe_fd[1] = write-end of pipee
 //
+// check with fsanitize=address
+// find out what errors to print
+
