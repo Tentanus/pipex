@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/24 12:56:19 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/30 14:07:44 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/12/05 21:01:44 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*get_cmd(char *cmd, char **path)
 	char	*cmd_path;
 	char	*cmd_tmp;
 
+	if (!path || !path[0] || !cmd)
+		pipex_error(0, "get_cmd");
 	if (!ft_strncmp(cmd, "./", 2))
 		if (access(cmd, X_OK | F_OK) == -1)
 			pipex_error(0, "get_cmd");
@@ -33,6 +35,20 @@ char	*get_cmd(char *cmd, char **path)
 	}
 	free(cmd_tmp);
 	return (cmd);
+}
+
+char	**get_path(char **env)
+{
+	char	**ret;
+
+	while (*env && ft_strncmp(*env, "PATH=", 5))
+		env++;
+	if (!(*env))
+		return (NULL);
+	ret = ft_split(&env[0][5], ':');
+	if (!ret)
+		pipex_error(0, "pipex_init");
+	return (ret);
 }
 
 int	wait_for(t_pipex pipex)

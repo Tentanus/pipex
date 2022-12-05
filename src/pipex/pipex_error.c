@@ -6,7 +6,7 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/23 23:05:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/24 12:02:48 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/12/05 12:30:08 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,5 @@ void	pipex_error(int error_id, const char *inp)
 		ft_putstr_fd(": ", 2);
 		ft_putendl_fd(inp, 2);
 	}
-	exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 #    By: mweverli <mweverli@student.codam.n>          +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/01 17:54:19 by mweverli      #+#    #+#                  #
-#    Updated: 2022/11/30 15:30:37 by mweverli      ########   odam.nl          #
+#    Updated: 2022/12/05 12:10:30 by mweverli      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,12 +14,12 @@
 #=========  GENERAL VARIABLES:  =========#
 #========================================#
 
-NAME		:=	./pipex
+NAME		:=	pipex
 
-OBJ_DIR		:=	./OBJ
-SRC_DIR		:=	./src
-INC_DIR		:=	./include
-LIB_DIR		:=	./lib
+OBJ_DIR		:=	OBJ
+SRC_DIR		:=	src
+INC_DIR		:=	include
+LIB_DIR		:=	lib
 
 SRC			:=	pipex/pipex.c \
 				pipex/pipex_error.c \
@@ -54,7 +54,7 @@ INCLUDE		:=	-I $(INC_DIR) \
 LIB			:=
 
 CC			:=	gcc
-CFL			:=	-Wall -Werror -Wextra $(if DEBUG, -g -fsanitize=address)
+CFL			:=	-Wall -Werror -Wextra -g -fsanitize=address
 COMPILE		:=	$(CC) $(CFL)
 
 echo:

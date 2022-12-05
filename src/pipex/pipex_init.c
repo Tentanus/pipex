@@ -6,23 +6,11 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/11 22:32:33 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/30 14:07:48 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/12/05 17:35:29 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
-
-char	**get_path(char **env)
-{
-	char	**ret;
-
-	while (ft_strncmp(*env, "PATH", 4))
-		env++;
-	ret = ft_split(&env[0][5], ':');
-	if (!ret)
-		pipex_error(0, "pipex_init");
-	return (ret);
-}
 
 t_pipex	pipex_init(char **argv, char **env)
 {

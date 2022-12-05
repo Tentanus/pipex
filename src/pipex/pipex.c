@@ -6,12 +6,11 @@
 /*   By: mweverli <mweverli@student.codam.n>          +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 01:06:03 by mweverli      #+#    #+#                 */
-/*   Updated: 2022/11/30 15:30:16 by mweverli      ########   odam.nl         */
+/*   Updated: 2022/12/05 21:02:04 by mweverli      ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <pipex.h>
-#include <stdio.h>
 
 void	first_child(t_pipex pipex)
 {
@@ -51,7 +50,7 @@ void	second_child(t_pipex pipex)
 	fd = open(pipex.file_2, O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	if (fd == -1)
 		pipex_error(0, "second_child");
-	setup_fd(pipex.pipefd[0], STDIN_FILENO, fd, STDOUT_FILENO);
+	setup_fd(pipex.pipefd[PIPE_READ], STDIN_FILENO, fd, STDOUT_FILENO);
 	close_pipe(pipex.pipefd);
 	arg = ft_split(pipex.cmd_2, ' ');
 	if (!arg)
@@ -73,17 +72,5 @@ int	main(int argc, char **argv, char **env)
 	second_child(pipex);
 	close_pipe(pipex.pipefd);
 	status = wait_for(pipex);
-	printf("%d\t%d"
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	return (status);
+	return (WEXITSTATUS(status));
 }
-
-//	test using the file [dev/random]
-//
-//	pipe_fd[0] = read-end of pipee
-//	pipe_fd[1] = write-end of pipee
-//
-// check with fsanitize=address
-// find out what errors to print
-
