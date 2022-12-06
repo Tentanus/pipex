@@ -6,7 +6,7 @@
 #    By: mweverli <mweverli@student.codam.n>          +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/01 17:54:19 by mweverli      #+#    #+#                  #
-#    Updated: 2022/12/05 12:10:30 by mweverli      ########   odam.nl          #
+#    Updated: 2022/12/06 16:27:58 by mweverli      ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -53,8 +53,12 @@ INCLUDE		:=	-I $(INC_DIR) \
 
 LIB			:=
 
+ifdef DEBUG
+	CFL		:=	-Wall -Werror -Wextra -g -fsanitize=address
+else
+	CFL		:=	-Wall -Werror -Wextra
+endif
 CC			:=	gcc
-CFL			:=	-Wall -Werror -Wextra -g -fsanitize=address
 COMPILE		:=	$(CC) $(CFL)
 
 echo:
