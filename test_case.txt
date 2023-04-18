@@ -1,0 +1,20 @@
+>$ ./pipex infile "sleep 5" ls out
+first child is supposed to sleep.
+second is will immediatly print it's output.
+
+>$ chmod 000 cursedfile 
+>$ ./pipex cursedfile "sleep 5" "ls -l" out
+first child will exit immediatly (Permission denied)
+second is will immediatly print it's output.
+
+>$ ./pipex infile "cat /dev/urandom" "head -c 100" out
+out file will only contain 100 characters
+
+>$ cp /bin/ls ./ls
+>$ chmod 000 ls
+>$ ./pipex infile "./ls" ls cursedfile  
+ERROR in get_cmd: Permission denied
+ERROR in second_child: Permission denied
+
+in bash
+unset PATH and run any combination
